@@ -1,12 +1,10 @@
-#!/usr/bin/env python
-
+#!/usr/bin/env python2
+from __future__ import print_function
 import os
 from collections import deque
 import sys
 import subprocess
 
-__author__ = 'Kevin K. <kbknapp@gmail.com>'
-__version__ = '0.1'
 
 class ConsoleMenu(object):
 	def __init__(self, menu_path):
@@ -25,11 +23,14 @@ class ConsoleMenu(object):
 				for f in files:
 					if f.startswith('__'):
 						continue
-					pkg_list = self.__mod_prefix.copy()
+					pkg_list = self.__mod_prefix[:]
 					fm_list = '.'.join(self.__mod_prefix)
 					pkg_list.append(os.path.splitext(os.path.basename(f))[0])
 					pkg = '.'.join(pkg_list)
 					mod = __import__(pkg, fromlist=['.'.join(self.__mod_prefix)])
+					#print('p {}'.format(pkg))
+					#print('m {}'.format(mod))
+					#print('mp {}'.format(self.__mod_prefix))
 					if mod.otype.lower() == 'menu':
 						self.__options[str(i)] = [mod.short_name, mod.disp_name, 'menu', mod.sub_menu]
 					else:
@@ -46,7 +47,9 @@ class ConsoleMenu(object):
 		subprocess.call('clear')
 		print(' > '.join(self.__menu_bar))
 		print('')
-		for opt in sorted(self.__options):
+		keys = self.__options.keys()
+		keys.sort()
+		for opt in keys:
 			print('{} - {}'.format(opt, self.__options[opt][1]))
 		print('')
 
@@ -77,7 +80,7 @@ class ConsoleMenu(object):
 			self.__options = dict()
 			self.__mod_prefix.append(mod[3])
 			self.__menu_bar.append(mod[0])
-			d = self.__mod_prefix.copy()
+			d = self.__mod_prefix[:]
 			d.insert(0,self.__basedir)
 			self.build_options('/'.join(d))
 		elif otype == 'routine':
@@ -93,7 +96,7 @@ class ConsoleMenu(object):
 		while True:
 			self.update_display()
 
-			ans = input('> ')
+			ans = raw_input('> ')
 			if ans:
 				if ans.lower() == 'b':
 					self.back()
