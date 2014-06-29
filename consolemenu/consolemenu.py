@@ -1,4 +1,36 @@
 #!/usr/bin/env python2
+"""
+Python 2.x
+
+consolemenu.py creates a terminal menu structure based off
+the file system. consolemenu.py can be used standalone, or
+as a library in a larger application.
+
+Example Directory Structure:
+my_app/
+  |
+  +--consolemenu.py
+  +--__init__.py
+  +--menu/
+      |
+      +--__init__.py
+      +--Option1.py
+      +--Option2.py
+      +--sub_menu/
+            |
+            +--__init__.py
+            +--Option3.py
+
+Option Usage:
+For simple menu items the only include 3 fields:
+    + short_name (The name displayed in the menu bar)
+    + display_name (The name displayed to the user)
+    + otype (name of directory containing sub menu options)
+
+Options that perform an action have the above three feilds as well
+as the following addtional function:
+    + run() (The "main()" of that module)
+"""
 from __future__ import print_function
 import os
 from collections import deque
