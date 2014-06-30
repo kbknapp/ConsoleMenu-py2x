@@ -1,18 +1,53 @@
 #!/usr/bin/env python2
+"""
+Python 2.x
+
+consolemenu.py creates a terminal menu structure based off
+the file system. consolemenu.py can be used standalone, or
+as a library in a larger application.
+
+Example Directory Structure:
+my_app/
+  |
+  +--consolemenu.py
+  +--__init__.py
+  +--menu/
+      |
+      +--__init__.py
+      +--Option1.py
+      +--Option2.py
+      +--sub_menu/
+            |
+            +--__init__.py
+            +--Option3.py
+
+Option Usage:
+For simple menu items the only include 3 fields:
+    + short_name (The name displayed in the menu bar)
+    + display_name (The name displayed to the user)
+    + otype (name of directory containing sub menu options)
+
+Options that perform an action have the above three feilds as well
+as the following addtional function:
+    + run() (The "main()" of that module)
+"""
 from __future__ import print_function
 import os
 from collections import deque
 import sys
 import subprocess
 
+__version__ = '0.3'
+__author__ = 'Kevin K. <kbknapp@gmail.com>'
 
 class ConsoleMenu(object):
-    def __init__(self, menu_path):
+    def __init__(self, menu_path, title=''):
         self.__options = dict()
         self.__history = deque()
         self.__basedir = os.path.dirname(os.path.realpath(__file__))
         self.__mod_prefix = [os.path.basename(menu_path)]
         self.__menu_bar = ['Home']
+        self.__title = title
 
         self.build_options(menu_path)
 
@@ -36,6 +71,9 @@ class ConsoleMenu(object):
                     pkg_list.append(os.path.splitext(os.path.basename(f))[0])
                     pkg = '.'.join(pkg_list)
                     mod = __import__(pkg, fromlist=['.'.join(self.__mod_prefix)])
+                    #print('p {}'.format(pkg))
+                    #print('m {}'.format(mod))
+                    #print('mp {}'.format(self.__mod_prefix))
                     if mod.otype.lower() == 'menu':
                         self.__options[str(i)] = [mod.short_name, mod.disp_name, 'menu', mod.sub_menu, f]
                     else:
@@ -56,12 +94,15 @@ class ConsoleMenu(object):
 
     def update_display(self):
         subprocess.call('clear')
+        if self.__title:
+            print(self.__title)
+            print('\n')
         print(' > '.join(self.__menu_bar))
         print('')
         keys = self.__options.keys()
         keys.sort()
         for opt in keys:
-            print('{} - {}'.format(opt, self.__options[opt][1]))
+            print('\t{} - {}'.format(opt, self.__options[opt][1]))
         print('')
 
     def exit(self):
@@ -98,7 +139,8 @@ class ConsoleMenu(object):
             self.enter_on()
             self.__options[key][3]()
             self.enter_off()
-        return
+        else:
+            return
 
 
 
@@ -106,7 +148,7 @@ class ConsoleMenu(object):
         while True:
             self.update_display()
 
-            ans = raw_input('> ')
+            ans = raw_input('Option (q=Quit,b=Back): ')
             if ans:
                 if ans.lower() == 'b':
                     self.back()

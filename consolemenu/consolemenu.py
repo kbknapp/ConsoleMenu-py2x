@@ -37,14 +37,17 @@ from collections import deque
 import sys
 import subprocess
 
+__version__ = '0.3'
+__author__ = 'Kevin K. <kbknapp@gmail.com>'
 
 class ConsoleMenu(object):
-    def __init__(self, menu_path):
+    def __init__(self, menu_path, title=''):
         self.__options = dict()
         self.__history = deque()
         self.__basedir = os.path.dirname(os.path.realpath(__file__))
         self.__mod_prefix = [os.path.basename(menu_path)]
         self.__menu_bar = ['Home']
+        self.__title = title
 
         self.build_options(menu_path)
 
@@ -91,12 +94,15 @@ class ConsoleMenu(object):
 
     def update_display(self):
         subprocess.call('clear')
+        if self.__title:
+            print(self.__title)
+            print('\n')
         print(' > '.join(self.__menu_bar))
         print('')
         keys = self.__options.keys()
         keys.sort()
         for opt in keys:
-            print('{} - {}'.format(opt, self.__options[opt][1]))
+            print('\t{} - {}'.format(opt, self.__options[opt][1]))
         print('')
 
     def exit(self):
@@ -142,7 +148,7 @@ class ConsoleMenu(object):
         while True:
             self.update_display()
 
-            ans = raw_input('> ')
+            ans = raw_input('Option (q=Quit,b=Back): ')
             if ans:
                 if ans.lower() == 'b':
                     self.back()
