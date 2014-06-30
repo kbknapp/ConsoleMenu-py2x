@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import subprocess
 
 short_name = 'Opt 3'
@@ -13,7 +14,7 @@ def run():
 		subprocess.call('clear')
 		i = 0
 		while i < len(need):
-			ans = input(need[i])
+			ans = raw_input(need[i])
 
 			if validate(ans):
 				answers.append(ans)
@@ -23,7 +24,7 @@ def run():
 		for a in answers:
 			final = '{}, {}'.format(final, a)
 		print(final)
-		input()
+		raw_input()
 		return
 
 def validate(char):

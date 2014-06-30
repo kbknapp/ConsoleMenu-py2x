@@ -36,9 +36,6 @@ class ConsoleMenu(object):
                     pkg_list.append(os.path.splitext(os.path.basename(f))[0])
                     pkg = '.'.join(pkg_list)
                     mod = __import__(pkg, fromlist=['.'.join(self.__mod_prefix)])
-                    #print('p {}'.format(pkg))
-                    #print('m {}'.format(mod))
-                    #print('mp {}'.format(self.__mod_prefix))
                     if mod.otype.lower() == 'menu':
                         self.__options[str(i)] = [mod.short_name, mod.disp_name, 'menu', mod.sub_menu, f]
                     else:
@@ -101,8 +98,7 @@ class ConsoleMenu(object):
             self.enter_on()
             self.__options[key][3]()
             self.enter_off()
-        else:
-            return
+        return
 
 
 
