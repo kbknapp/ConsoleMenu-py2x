@@ -160,8 +160,4 @@ class ConsoleMenu(object):
 if __name__ == '__main__':
     m_dir = os.path.join(os.path.dirname(__file__),'menu')
     cm = ConsoleMenu(m_dir)
-    try:
-        cm.enter_off()
-        cm.start()
-    except:
-        cm.enter_on()
+    cm.start()
