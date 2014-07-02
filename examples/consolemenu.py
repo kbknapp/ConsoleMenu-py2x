@@ -30,6 +30,12 @@ For simple menu items the only include 3 fields:
 Options that perform an action have the above three feilds as well
 as the following addtional function:
     + run() (The "main()" of that module)
+
+Commandline Usage: consolemenu.py [flags]
+
+FLAGS:
+    -v, --version       Display version information
+    -h, --help          Display help information
 """
 from __future__ import print_function
 import os
@@ -37,7 +43,7 @@ from collections import deque
 import sys
 import subprocess
 
-__version__ = '0.3'
+__version__ = '0.3.2'
 __author__ = 'Kevin K. <kbknapp@gmail.com>'
 
 class ConsoleMenu(object):
@@ -156,8 +162,31 @@ class ConsoleMenu(object):
                     self.exit()
                 else:
                     self.do_option(ans)
+valid_args = {'v':'\nConsole Menu v{}\n'.format(__version__),
+                'h':'''
+Usage: consolemenu.py [flags]
+
+FLAGS:
+    -v, --version       Display version information
+    -h, --help          Display help information\n'''}
+
+def do_arg(arg):
+    if arg[0] != '-':
+        return
+    for c in arg:
+        if c == '-':
+            continue
+        c = c.lower()
+        if c in valid_args:
+            print(valid_args[c])
+            return
 
 if __name__ == '__main__':
+
+    if len(sys.argv) > 1:
+        do_arg(sys.argv[1])
+        sys.exit(0)
+
     m_dir = os.path.join(os.path.dirname(__file__),'menu')
     cm = ConsoleMenu(m_dir)
     cm.start()
