@@ -149,8 +149,6 @@ class ConsoleMenu(object):
         else:
             return
 
-
-
     def start(self):
         while True:
             self.update_display()
@@ -163,6 +161,7 @@ class ConsoleMenu(object):
                     self.exit()
                 else:
                     self.do_option(ans)
+
 valid_args = {'v':'\nConsole Menu v{}\n'.format(__version__),
                 'h':'''
 Usage: consolemenu.py [flags]
