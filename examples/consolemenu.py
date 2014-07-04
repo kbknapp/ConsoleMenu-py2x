@@ -44,7 +44,7 @@ from collections import deque
 import sys
 import subprocess
 
-__version__ = '0.3.2'
+__version__ = '0.3.3'
 __author__ = 'Kevin K. <kbknapp@gmail.com>'
 
 class ConsoleMenu(object):
@@ -144,8 +144,6 @@ class ConsoleMenu(object):
         else:
             return
 
-
-
     def start(self):
         while True:
             self.update_display()
@@ -158,6 +156,7 @@ class ConsoleMenu(object):
                     self.exit()
                 else:
                     self.do_option(ans)
+
 valid_args = {'v':'\nConsole Menu v{}\n'.format(__version__),
                 'h':'''
 Usage: consolemenu.py [flags]
