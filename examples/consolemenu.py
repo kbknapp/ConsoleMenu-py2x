@@ -44,7 +44,7 @@ from collections import deque
 import sys
 import subprocess
 
-__version__ = '0.3.3'
+__version__ = '0.3.4'
 __author__ = 'Kevin K. <kbknapp@gmail.com>'
 
 class ConsoleMenu(object):
@@ -73,6 +73,8 @@ class ConsoleMenu(object):
                                 break
                     elif f in added:
                         continue
+                    elif f[-1] == '~':
+                        continue
                     fm_list = ['.'.join(self.__mod_prefix)]
                     pkg = '{}.{}'.format(fm_list[0],os.path.splitext(os.path.basename(f))[0])
                     mod = __import__(pkg, fromlist=fm_list)
@@ -92,7 +94,6 @@ class ConsoleMenu(object):
                 else:
                     self.__options[str(i)] = ['Quit', 'Quit', 'Routine', self.exit, None]
                 return
-
 
     def update_display(self):
         subprocess.call('clear')
@@ -156,6 +157,7 @@ class ConsoleMenu(object):
                     self.exit()
                 else:
                     self.do_option(ans)
+
 
 valid_args = {'v':'\nConsole Menu v{}\n'.format(__version__),
                 'h':'''
