@@ -73,14 +73,9 @@ class ConsoleMenu(object):
                                 break
                     elif f in added:
                         continue
-                    pkg_list = self.__mod_prefix[:]
-                    fm_list = '.'.join(self.__mod_prefix)
-                    pkg_list.append(os.path.splitext(os.path.basename(f))[0])
-                    pkg = '.'.join(pkg_list)
-                    mod = __import__(pkg, fromlist=['.'.join(self.__mod_prefix)])
-                    #print('p {}'.format(pkg))
-                    #print('m {}'.format(mod))
-                    #print('mp {}'.format(self.__mod_prefix))
+                    fm_list = ['.'.join(self.__mod_prefix)]
+                    pkg = '{}.{}'.format(fm_list[0],os.path.splitext(os.path.basename(f))[0])
+                    mod = __import__(pkg, fromlist=fm_list)
                     if mod.otype.lower() == 'menu':
                         self.__options[str(i)] = [mod.short_name, mod.disp_name, 'menu', mod.sub_menu, f]
                     else:
